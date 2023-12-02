@@ -36,4 +36,20 @@ const getAllPhotos= async (req,res)=>{
     }
 }
 
-export { createPhoto, getAllPhotos }
+const getSelectedPhoto= async(req,res)=>{
+    try {
+        const photo= await Photo.findById({_id:req.params.id})     //_id mongo db deki dokümanlardaki _id, diğeri ise req deki parametrelerdeki id değeri
+        res.status(200).render('photo.ejs', {
+            succeded:true,
+            photo,
+            link: 'photos'
+        })
+    } catch (err) {
+        res.status(500).json({
+            succeded:false,
+            err
+        })
+    }
+}
+
+export { createPhoto, getAllPhotos, getSelectedPhoto }

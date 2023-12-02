@@ -1,0 +1,35 @@
+import mongoose, { Schema } from "mongoose";
+import bcrypt from "bcrypt"                                   //npm i bcrypt  veritabanında şifreyi doğrudan göstermek yerine şifreli kaydetmek için
+
+const userSchema = new Schema({
+    name: {                                //şemadaki birimlerin isimleri formdaki(register.ejs ve login.ejs) birimlerin isimleri ile aynı olmalıdır!
+        type: String,
+        required: true,
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    }
+},
+    {
+        timestamps: true                //created time ve uploaded time şeklinde iki tane üretiyor veri tabanında
+    }
+)
+
+userSchema.pre("save", function (next) {               //kaydedilmeden önce (pre-save hook) belirli bir işlem gerçekleştirmek üzere Mongoose kullanarak MongoDB'de bir şema (schema) için belirlenmiş bir ön işlemi temsil eder.
+    const user = this                                  // bu ön işlem sırasında kullanılacak olan "user" değişkenini tanımlar. Bu değişken, belgeyi temsil eder.
+    bcrypt.hash(user.password, 10, (err, hash) => {    // user.password kullanıcının orijinal şifresini temsil eder. 10 ikinci argüman, hash için kullanılacak olan "salt rounds" veya tuz sayısını belirtir. Daha yüksek bir tuz sayısı, daha güvenli bir hash elde etmek için kullanılır.(err, hash) => {: Bu bir callback fonksiyonudur. Hash işlemi tamamlandığında bu fonksiyon çağrılır.
+        user.password = hash                           //Oluşturulan hash, kullanıcının şifresiyle değiştirilir. Yani, artık kullanıcının şifresi açık metin halinde değil, güvenli bir şekilde hashlenmiş haldedir.
+        next()                                         //bu işlevi çağırmak, bu ön işlemin tamamlandığını ve ardından asıl kaydetme işleminin devam edebileceğini belirtir.
+    })
+})
+
+const User = mongoose.model("User", userSchema)           //yukardaki next() olmasaydı bu satıra geçmezdi. 
+
+export default User
