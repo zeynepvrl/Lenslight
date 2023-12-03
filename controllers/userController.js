@@ -1,6 +1,7 @@
 import userModel from "../Models/userModel.js"
 import bcrypt from "bcrypt"                          //npm install bcrypt        şifrelerin veri tabanında doğrudan görünmemesi için 
 import jwt from "jsonwebtoken"   ;                    //npm install jsonwebtoken   kullanıcı authorization için
+import Photo from "../Models/photoModel.js";
 
 const userCreate= async (req,res)=>{
     try {
@@ -65,9 +66,11 @@ const createToken=(userId)=>{                             //tokenın payload kı
     })                                                       //bu fonksiyon yukarıda login fonksiyonunun başarılı olduğu if bölümünde response olarak döndürülenler arasında kullanılacak
 }
 
-const getDashboardPage=(req,res)=>{
+const getDashboardPage= async (req,res)=>{                      // dashboard da da o kullanıcının fotoğrafları listeleneceği için response da o photo ları göndermemiz gerekiyor
+    const photos= await Photo.find({user:res.locals.user._id})   // : un sol tarafı mongodb de photos collection undaki herbirinin user bilgilerinden : sağ taraftaki _id sine ye eşit olanları bulacak
     res.render('dashboard',{
-        link:'dashboard'
+        link:'dashboard',
+        photos               //artık dashboard.ejs de kullanılabilir
     })
 }
 

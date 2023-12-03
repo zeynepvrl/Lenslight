@@ -5,7 +5,7 @@ const userSchema = new Schema({
     name: {                                //şemadaki birimlerin isimleri formdaki(register.ejs ve login.ejs) birimlerin isimleri ile aynı olmalıdır!
         type: String,
         required: true,
-        unique: true
+        lowercase:true
     },
     email: {
         type: String,

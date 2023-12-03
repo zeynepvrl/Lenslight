@@ -2,13 +2,13 @@ import Photo from "../Models/photoModel.js";
 
 const createPhoto = async (req, res) => {                      /*  satır 4 de req.body den gelen bilgilerle veri tabanında Photo modelini kullanrak üretim yaptı => bunlardan sonra üretileni geri reponse etmesi lazım 5. satırdı- fotoğrafı yükledikten sonra görmemiz gibi*/
 
-    console.log("Req body:", req.body)
     try {
-        const photo = await Photo.create(req.body)             /* req.body şeklinde yazıp kontrol edcek templateimiz henüz hazır olmadı için: thunderClient  */
-        res.status(201).json({
-            succeded: true,
-            photo,
-        })
+        await Photo.create({                                 /* req.body şeklinde yazıp kontrol edecek templateimiz henüz hazır olmadı için: thunderClient kullanabiliriz */
+        name:req.body.name,
+        description:req.body.description,
+        user:res.locals.user._id                             /* Kullanıcı oturum açtığında veya kimlik doğrulama gerçekleştiğinde, kullanıcı bilgileri genellikle bir oturum nesnesine kaydedilir ve bu oturum nesnesi res.locals veya başka bir ortam değişkeni aracılığıyla paylaşılır. */
+        })                      
+        res.status(201).redirect("/users/dashboard")
     } catch (error) {
         res.status(500).json({
             succeded:false,

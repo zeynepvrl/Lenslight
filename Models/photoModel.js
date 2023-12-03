@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
+
 const photoSchema = new Schema({
     name: {
         type: String,
@@ -14,7 +15,11 @@ const photoSchema = new Schema({
     },
     uploadedAt: {
         type: Date,
-        default: Date.now
+        default: Date.now 
+    },                                                                                                        //bunu zaten photoCreate de belirteceğiz <=
+    user:{                           //her fotoğraf hangi user a ait olduğuna dair bilgi taşıyacak  , üstteki 3 bilgiyi fotoğrafın oluşturulduğu formdan olacağız ama user bilgisini req.locals.user dan alacağız, tokenı decode edip buraya user ı yerleştirmiştik zaten
+        type:Schema.Types.ObjectId,
+        ref:'User'                  //User modelini referans gösterdik
     }
 })
 
