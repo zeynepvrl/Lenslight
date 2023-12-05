@@ -1,14 +1,15 @@
 <%- include("partials/_header.ejs") %>
-   <!-- body -->
-   <body class="main-layout inner_page">
-      <!-- loader  -->
-      <div class="loader_bg">
-         <div class="loader"><img src="/images/loading.gif" alt="#"/></div>
-      </div>
-      <!-- end loader -->
-     
-         <!-- header -->
-         <%- include("partials/_menu.ejs")%>
+  <!-- body -->
+
+  <body class="main-layout inner_page">
+    <!-- loader  -->
+    <div class="loader_bg">
+      <div class="loader"><img src="/images/loading.gif" alt="#" /></div>
+    </div>
+    <!-- end loader -->
+
+    <!-- header -->
+    <%- include("partials/_menu.ejs")%>
       <!-- end header inner -->
       <!-- about -->
       <div class="about">
@@ -16,14 +17,20 @@
           <div class="row">
             <div class="col-md-6">
               <div class="titlepage text_align_left">
-                <h3 style="font-size:24px !important " > <%= photo.name %> </h3>
-                <p><%= photo.description %>  </p>
-                <a class="read_more" href="about.html">Read More</a>
+                <h3 style="font-size:24px !important ">
+                  <%= photo.name %>
+                </h3>
+                <p>
+                  <%= photo.description %>
+                </p>
+                <a class="read_more" href="about.html">
+                 Photographer: <%= photo.user.name %>                           <!-- burda user ın görünebilmesi için photoCpntrollerdaki getSelectedPhoto da user ı populate etmen gerekiyor -->
+                </a>
               </div>
             </div>
             <div class="col-md-6">
               <div class="about_img">
-                <figure><img src="/images/about_img.png" alt="#"/></figure>
+                <figure><img src="<%= photo.url %>" alt="<%= photo.name %>" /></figure>
               </div>
             </div>
           </div>

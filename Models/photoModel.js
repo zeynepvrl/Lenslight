@@ -20,6 +20,10 @@ const photoSchema = new Schema({
     user:{                           //her fotoğraf hangi user a ait olduğuna dair bilgi taşıyacak  , üstteki 3 bilgiyi fotoğrafın oluşturulduğu formdan olacağız ama user bilgisini req.locals.user dan alacağız, tokenı decode edip buraya user ı yerleştirmiştik zaten
         type:Schema.Types.ObjectId,
         ref:'User'                  //User modelini referans gösterdik
+    },
+    url:{
+        type:String,
+        required:true
     }
 })
 
