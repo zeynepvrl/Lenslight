@@ -15,7 +15,19 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    followers:[                               // [] takipçi birden fazla olabileceği için array içine alıyoruz
+        {
+            type: Schema.Types.ObjectId,
+            ref:"User"                       //followersların kendisi yine bir user olduğu için User modelini referans veriyoruz. user model içinde referansı yine user modele veriyoruz
+        }
+    ],
+    followings:[                              // followers ve following bilgileri dashboard da gösterileceği için UserControllerdaki getDashboard fonksiyonunda mongoDb den user Modelinden uygun user ı çekip bu ikisini populate etmeliyiz ki dashboard.ejs de kullanabilelim
+        {
+            type: Schema.Types.ObjectId,
+            ref:"User"
+        }
+    ]
 },
     {
         timestamps: true                //created time ve uploaded time şeklinde iki tane üretiyor veri tabanında

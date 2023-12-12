@@ -35,12 +35,15 @@ const createPhoto = async (req, res) => {                      /*  satır 4 de r
 
 const getAllPhotos= async (req,res)=>{
     try {
-        const photos= await Photo.find({})    //find in parantezleri boş çünkü hepsini getirecek
-        res.status(200).render("photos.ejs" , {  // response olarak photos.ejs yi render at ama bu template e aynı zamanda veri tabanından oluşturdupun photos u da gönder, bu photos u photos.ejs de karşılamak gerek
-            succeded:true,
+        const photos= res.locals.user                              //eğer giriş yapmış bir kullanıcı varsa(yani res.locals.user varsa) :dan öncesi, yoksa :dan sonrası
+        ? await Photo.find({user : {$ne: res.locals.user._id}})    //find in parantezleri boş çünkü hepsini getirecek
+        : await Photo.find({})
+
+        res.status(200).render("photos" , {                                // response olarak photos.ejs yi render at ama bu template e aynı zamanda veri tabanından oluşturdupun photos u da gönder, bu photos u photos.ejs de karşılamak gerek
             photos,
-            link:'photos'                   //link ler _menu.ejs deki active classının kimde olacağını belirlemek için
+            link:'photos'                                                     //link ler _menu.ejs deki active classının kimde olacağını belirlemek için
         })  
+        
 
     } catch (error) {
         res.status(500).json({
@@ -49,12 +52,13 @@ const getAllPhotos= async (req,res)=>{
         })
     }
 }
+    
 
 const getSelectedPhoto= async(req,res)=>{
     try {
         const photo= await Photo.findById({_id:req.params.id}).populate("user")     //_id mongo db deki dokümanlardaki _id, diğeri ise req deki parametrelerdeki id değeri
         res.status(200).render('photo.ejs', {                                       //populate işlemi photo.ejs deki photo.user.name deki user ı görmesi için
-            succeded:true,
+            succeded:true,                                                                  // photo ile user araında bir bağlantı var ve ben photo üzerinden user ı kullabilirim demek
             photo,
             link: 'photos'
         })

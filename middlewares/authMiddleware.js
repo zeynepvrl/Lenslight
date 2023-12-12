@@ -1,7 +1,7 @@
 import User from "../Models/userModel.js";
 import jwt from "jsonwebtoken";
 
-//şimdi cookies de taşınan token yardımıyla o anki kullanıcının bilgilerine ulaşma fonksiyonu=>
+//şimdi cookies de taşınan token yardımıyla o anki kullanıcının bilgilerine app.js den yani her yerden ulaşmak için res.locals.user a atama durumu fonksiyonu=>
 const checkUser= async (req,res,next)=>{
     const token=req.cookies.jwt
     if(token){
@@ -22,6 +22,7 @@ const checkUser= async (req,res,next)=>{
     }
 }
 
+//uygulamada herhangi bir yerde tokenın varlığını kontrol edilecekse yani yetki var mı yok mu kontrol edilip ulaşılacak bir yer varsa onun yüklenmesi işleminden hemen önce bu fonksiyonu çağırıyoruz, yetki varsa next() ediyor ve sonraki aıma geçiyor, örn: userRoute /dashboard
 const authenticateToken = async (req, res, next) => {
     try {
         const token= req.cookies.jwt    //bu jwt userControllerda create edilen tokenın login işlemi sırasında if same ise cookies e taşınması sırasında verilen ismi olan jwt, yukarda import edilen değil ama bağlantılı

@@ -1,13 +1,14 @@
 import express from 'express';
 import conn from "./db.js";
 import dotenv from "dotenv";
-import cookieParser from "cookie-parser";  //npm install cokkie-parser. Express.js uygulamalarında çerezleri (cookies) işlemek ve oluşturmak için kullanılan bir Node.js modülüdür. Çerezler, web tarayıcıları ile sunucu arasında küçük bilgi parçalarını depolamak için kullanılan veri yapılardır. biz jsonwebtoken ı cookie ye kaydetmek için kullancağız bu paketi
+import cookieParser from "cookie-parser";                //npm install cokkie-parser. Express.js uygulamalarında çerezleri (cookies) işlemek ve oluşturmak için kullanılan bir Node.js modülüdür. Çerezler, web tarayıcıları ile sunucu arasında küçük bilgi parçalarını depolamak için kullanılan veri yapılardır. biz jsonwebtoken ı cookie ye kaydetmek için kullancağız bu paketi
+import methodOverride from 'method-override';            //Express uygulamalarında HTTP taleplerindeki _method parametresini kullanarak farklı HTTP yöntemlerini taklit etmeyi sağlayan bir middleware'dir. genellikle HTML formları üzerinden DELETE ve PUT gibi HTTP yöntemlerini kullanmak isteyen durumlar için kullanılır. Çünkü HTML formu sadece GET ve POST yöntemlerini doğrudan destekler.
 import pageRoute from "./routes/pageRoute.js"
 import photoRoute from "./routes/photoRoute.js"
 import userRoute from "./routes/userRoute.js"
 import { checkUser } from './middlewares/authMiddleware.js';
 import fileUpload from 'express-fileupload';                      //npm install express-fileupload 
-import {v2 as cloudinary} from "cloudinary"           //vs versiyonunu impoer ettik ama bunu cloudinary adıyla kullanabilmek için as ile import ettik
+import {v2 as cloudinary} from "cloudinary"                   //v2 versiyonunu import ettik ama bunu cloudinary adıyla kullanabilmek için as ile import ettik
 
 dotenv.config();
 
@@ -26,12 +27,15 @@ const port = process.env.PORT;
 //ejs template engine
 app.set('view engine', 'ejs')
 
-//static files middleware
+//static files middleware                       app.use  Express uygulamasına bir middleware eklemek için kullanılır.
 app.use(express.static('public'));
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))      //register daki form body sinin içindeki bilgileri parse edebilmesi için, okuyabilmesi için
 app.use(cookieParser());                          //import ettiğimizi burda çalıştırıyoruz
 app.use(fileUpload({useTempFiles:true}))          //explorer daki temp dosyasını kullanması:true   // Dosya yükleme middleware'ini kullanma ve geçici dosyaların kullanılmasını etkinleştirme
+app.use(methodOverride('_method',{                //_method': Bu, middleware'ın hangi parametreyi kontrol edeceğini belirtir. Yani, gelen taleplerde hangi parametrenin HTTP yöntemini belirlemek için kullanılacağını gösterir.
+  methods:['POST','GET'],                         //methods: Bu, hangi HTTP yöntemlerinin değiştirilebileceğini belirten bir dizi. Yani, _method parametresinin alabileceği değerleri belirtir. Bu örnekte, sadece 'POST' ve 'GET' yöntemleri geçerlidir.
+}))                          //şimdi user.ejs de PUT isteği olduğunu belirtebiliriz
 
 
 
