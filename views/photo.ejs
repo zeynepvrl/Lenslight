@@ -23,7 +23,7 @@
                 <p>
                   <%= photo.description %>
                 </p>
-                <a class="read_more" href="about.html">
+                <a class="read_more" href="/users/<%= photo.user._id %>">          <!-- fotoğrafın detaylı gösteriminde, yükleyen kullanıcının adının yazdığı butona basınca o userın sayfasına gidecek -->
                  Photographer: <%= photo.user.name %>                           <!-- burda user ın görünebilmesi için photoCpntrollerdaki getSelectedPhoto da user ı populate etmen gerekiyor -->
                 </a>
               </div>

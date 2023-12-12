@@ -11,10 +11,11 @@
             <div class="navbar-area" style="float:right">
                <nav class="site-navbar">
                   <ul>
-                     <li><a class="<&= link==='index' && 'active' %> " href="/">Home</a></li>
+                     <li><a class="<%= link==='index' && 'active' %> " href="/">Home</a></li>
                      <li><a class="<%= link==='about' && 'active' %> " href="/about">About</a></li>
                      <li><a class="<%= link==='photos' && 'active' %>" href="/photos">Photos</a></li>
-                     <% if(user){ %> <!-- null boolean olarak false u ifade eder null ise kullanıcı else e girer -->
+                     <% if(user){ %> <!-- null boolean olarak false u ifade eder null ise kullanıcı else e girer, bu user a app.js de use ettiğimiz authMiddleware deki checkUser sayesinde ulaşabiliyoruz -->
+                        <li><a class="<%= link==='users' && 'active' %>" href="/users">Users</a></li>
                         <li><a class="<%= link==='dashboard' && 'active' %>" href="/users/dashboard">Dashboard</a></li>
                         <li><a class="<%= link==='logout' && 'active' %>" href="/logout">Logout</a></li>
                         <% }else{ %>
